@@ -6,10 +6,19 @@ import com.example.bookkeeper.database.entities.bojos.BooksAndBookDetailsBojo
 @Dao
 interface BooksDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertListOfBooks(books: MutableList<BooksEntity>)
+    suspend fun insertListOfBooks(books: MutableList<BooksEntity>)
 
     @Insert
-    fun insertBook(books: BooksEntity)
+    suspend  fun insertBook(books: BooksEntity)
+
+    @Query("DELETE FROM BooksEntity")
+    suspend fun deleteAll()
+
+    @Transaction
+    suspend fun updateData(searchedBooks: MutableList<BooksEntity>){
+        deleteAll()
+        insertListOfBooks(searchedBooks)
+    }
 
     @Transaction
     @Query("SELECT * FROM BooksEntity")

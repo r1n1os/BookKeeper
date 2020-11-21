@@ -8,6 +8,6 @@ data class BooksAndBookDetailsBojo(
     @Embedded
     var book: BooksEntity,
     @Relation(parentColumn = "id", entityColumn = "bookId")
-    var booksInfo: List<BookInfoEntity>)
+    var booksInfo: BookInfoEntity)
  {
  }

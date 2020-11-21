@@ -41,11 +41,9 @@ class BookSearchViewModel(application: Application) : BaseViewModel(application)
             bookResponse.books.forEach {
                 it.volumeInfo.bookId = it.id
                 booksInfo.add(it.volumeInfo)
-                //Log.d("bookInfo", it.volumeInfo.description)
-
             }
-            BookKeeperApplication.getInstance().getDatabaseInstance().booksDao().insertListOfBooks(bookResponse.books)
-            BookKeeperApplication.getInstance().getDatabaseInstance().bookInfoDao().insertListOfBookInfo(booksInfo)
+            BookKeeperApplication.getInstance().getDatabaseInstance().booksDao().updateData(bookResponse.books)
+            BookKeeperApplication.getInstance().getDatabaseInstance().bookInfoDao().updateBookInfo(booksInfo)
             val loadBooks = BookKeeperApplication.getInstance().getDatabaseInstance().booksDao().getAllBooks()
             withContext(Dispatchers.Main){
                 emit(loadBooks)
