@@ -8,10 +8,10 @@ import android.view.ViewGroup
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.bookkeeper.R
+import com.example.bookkeeper.base_classes.BaseFragment
 
-class LauncherFragment : Fragment() {
+class LauncherFragment : BaseFragment<LauncherViewModel>() {
 
-    private lateinit var navController: NavController
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_launcher, container, false)
@@ -19,8 +19,7 @@ class LauncherFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        navController = Navigation.findNavController(view)
-        navController.navigate(R.id.action_launcherFragment_to_booksSearchFragment)
+        Navigation.findNavController(view).navigate(R.id.action_launcherFragment_to_booksSearchFragment)
     }
 
 }

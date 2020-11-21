@@ -10,6 +10,6 @@ class RetrofitService {
              .baseUrl(BASE_URL)
              .addConverterFactory(GsonConverterFactory.create())
              .build()
-             .create(RetrofitService::class.java)
+             .create(BooksApi::class.java)
 
 }

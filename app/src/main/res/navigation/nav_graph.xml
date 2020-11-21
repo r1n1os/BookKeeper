@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/launcherFragment">
-
     <fragment
         android:id="@+id/launcherFragment"
         android:name="com.example.bookkeeper.main_flow.LauncherFragment"

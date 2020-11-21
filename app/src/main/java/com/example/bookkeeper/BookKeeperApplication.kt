@@ -12,8 +12,8 @@ class BookKeeperApplication: Application() {
     }
 
     override fun onCreate() {
-        super.onCreate()
         mInstance = this
+        super.onCreate()
     }
 
     fun getDatabaseInstance(): BookKeeperDatabase = BookKeeperDatabase(this)

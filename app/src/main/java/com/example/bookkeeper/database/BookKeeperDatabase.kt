@@ -4,13 +4,16 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.bookkeeper.database.entities.BooksDao
-import com.example.bookkeeper.database.entities.BooksEntity
+import androidx.room.TypeConverters
+import com.example.bookkeeper.database.entities.*
+import com.example.bookkeeper.database.entities.type_converters.BookInfoTypeConverter
 
-@Database(entities= [BooksEntity::class], version = 1)
+@Database(entities= [BooksEntity::class, BookInfoEntity::class], version = 1)
+@TypeConverters(BookInfoTypeConverter::class)
 abstract class BookKeeperDatabase: RoomDatabase() {
 
     abstract fun booksDao(): BooksDao
+    abstract fun bookInfoDao(): BookInfoDao
 
     companion object{
         @Volatile
