@@ -2,4 +2,6 @@
     <string name="app_name">BookKeeper</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="keep_book_always_in_your_pocket">Keep Book Always In Your Pocket</string>
+    <string name="you_did_not_search_for_any_book_yet">You did not search for any book yet!</string>
+    <string name="previous_searched_books">Previous searched books</string>
 </resources>

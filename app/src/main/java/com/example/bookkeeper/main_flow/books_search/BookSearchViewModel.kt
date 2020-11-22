@@ -7,6 +7,7 @@ import com.example.bookkeeper.BookKeeperApplication
 import com.example.bookkeeper.base_classes.BaseViewModel
 import com.example.bookkeeper.database.entities.*
 import com.example.bookkeeper.database.entities.bojos.BooksAndBookDetailsBojo
+import com.example.bookkeeper.main_flow.books_search.model.SearchedBooksModel
 import com.example.bookkeeper.network.RetrofitService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -18,7 +19,7 @@ import kotlinx.coroutines.withContext
 class BookSearchViewModel(application: Application) : BaseViewModel(application) {
 
     private var retrofitService = RetrofitService()
-    var booksResult = MutableLiveData<List<BooksAndBookDetailsBojo>>()
+    var booksResult = MutableLiveData<List<SearchedBooksModel>>()
     /*var bookResult : LiveData<TestEntity> = liveData(Dispatchers.IO){
         val result = retrofitService.getRetrofitService().getSearchedBooks("Clean Code")
         emit(result)
@@ -33,7 +34,7 @@ class BookSearchViewModel(application: Application) : BaseViewModel(application)
     }
 
    private fun executeRequestForSearchedBook(searchKeyword: String) = flow{
-       var loadBooks = mutableListOf<BooksAndBookDetailsBojo>()
+       var loadBooks = mutableListOf<SearchedBooksModel>()
         withContext(Dispatchers.IO){
             val bookResponse = retrofitService.getRetrofitService().getSearchedBooks(searchKeyword)
             val booksInfo = mutableListOf<BookInfoEntity>()
@@ -50,7 +51,7 @@ class BookSearchViewModel(application: Application) : BaseViewModel(application)
                     BookKeeperApplication.getInstance().getDatabaseInstance().imagesDao().updateBookInfo(tempImage)
                 }
             }
-            loadBooks = BookKeeperApplication.getInstance().getDatabaseInstance().booksDao().getAllBooks().toMutableList()
+           loadBooks = SearchedBooksModel.createBookSearchModel(BookKeeperApplication.getInstance().getDatabaseInstance().booksDao().getAllBooks().toMutableList(), false)
         }
        emit(loadBooks)
     }
@@ -64,9 +65,9 @@ class BookSearchViewModel(application: Application) : BaseViewModel(application)
     }
 
     private fun executeLocalRequestToGetLastSearchedItems() = flow {
-        var books = mutableListOf<BooksAndBookDetailsBojo>()
+        var books = mutableListOf<SearchedBooksModel>()
         withContext(Dispatchers.IO){
-             books = BookKeeperApplication.getInstance().getDatabaseInstance().booksDao().getAllBooks().toMutableList()
+             books = SearchedBooksModel.createBookSearchModel(BookKeeperApplication.getInstance().getDatabaseInstance().booksDao().getAllBooks().toMutableList(), true)
         }
         emit(books)
     }

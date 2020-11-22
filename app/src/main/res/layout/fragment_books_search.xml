@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".main_flow.books_search.BooksSearchFragment">
 
@@ -35,6 +36,7 @@
             android:id="@+id/booksResultRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:paddingTop="80dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
