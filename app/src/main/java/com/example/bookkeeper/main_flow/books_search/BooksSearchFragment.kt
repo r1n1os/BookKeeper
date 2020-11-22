@@ -41,6 +41,7 @@ class BooksSearchFragment : BaseFragment<BookSearchViewModel>(), SearchView.OnQu
         initAdapter()
         initSearchViewListener()
         getObservableForBooks()
+        makeRequestToGetLastSearchedItems()
     }
 
     private fun initAdapter() {
@@ -58,6 +59,9 @@ class BooksSearchFragment : BaseFragment<BookSearchViewModel>(), SearchView.OnQu
         bookSearch.setOnQueryTextListener(this)
     }
 
+    private fun makeRequestToGetLastSearchedItems(){
+        bookSearchViewModel.getPreviousSearchedItemsFromDatabase()
+    }
     /**
      * Search view Listeners
      * */

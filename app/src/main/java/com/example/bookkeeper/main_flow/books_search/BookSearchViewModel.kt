@@ -5,10 +5,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.bookkeeper.BookKeeperApplication
 import com.example.bookkeeper.base_classes.BaseViewModel
-import com.example.bookkeeper.database.entities.AuthorsEntity
-import com.example.bookkeeper.database.entities.BookInfoEntity
-import com.example.bookkeeper.database.entities.ImagesEntity
-import com.example.bookkeeper.database.entities.VolumesEntity
+import com.example.bookkeeper.database.entities.*
 import com.example.bookkeeper.database.entities.bojos.BooksAndBookDetailsBojo
 import com.example.bookkeeper.network.RetrofitService
 import kotlinx.coroutines.Dispatchers
@@ -36,6 +33,7 @@ class BookSearchViewModel(application: Application) : BaseViewModel(application)
     }
 
    private fun executeRequestForSearchedBook(searchKeyword: String) = flow{
+       var loadBooks = mutableListOf<BooksAndBookDetailsBojo>()
         withContext(Dispatchers.IO){
             val bookResponse = retrofitService.getRetrofitService().getSearchedBooks(searchKeyword)
             val booksInfo = mutableListOf<BookInfoEntity>()
@@ -46,18 +44,30 @@ class BookSearchViewModel(application: Application) : BaseViewModel(application)
             BookKeeperApplication.getInstance().getDatabaseInstance().booksDao().updateData(bookResponse.books)
             BookKeeperApplication.getInstance().getDatabaseInstance().bookInfoDao().updateBookInfo(booksInfo)
             booksInfo.forEach {bookInfo ->
-                bookInfo?.imageLinks?.let { image ->
+                bookInfo.imageLinks?.let { image ->
                     var tempImage = image
                     tempImage.bookDetailsId = bookInfo.bookInfoId
                     BookKeeperApplication.getInstance().getDatabaseInstance().imagesDao().updateBookInfo(tempImage)
                 }
             }
-           // BookKeeperApplication.getInstance().getDatabaseInstance().authorsDao().updateAuthors(authors)
+            loadBooks = BookKeeperApplication.getInstance().getDatabaseInstance().booksDao().getAllBooks().toMutableList()
+        }
+       emit(loadBooks)
+    }
 
-            val loadBooks = BookKeeperApplication.getInstance().getDatabaseInstance().booksDao().getAllBooks()
-            withContext(Dispatchers.Main){
-                emit(loadBooks)
+    fun getPreviousSearchedItemsFromDatabase(){
+        launch {
+            executeLocalRequestToGetLastSearchedItems().collect { foundBooks ->
+                booksResult.value = foundBooks
             }
         }
+    }
+
+    private fun executeLocalRequestToGetLastSearchedItems() = flow {
+        var books = mutableListOf<BooksAndBookDetailsBojo>()
+        withContext(Dispatchers.IO){
+             books = BookKeeperApplication.getInstance().getDatabaseInstance().booksDao().getAllBooks().toMutableList()
+        }
+        emit(books)
     }
 }
