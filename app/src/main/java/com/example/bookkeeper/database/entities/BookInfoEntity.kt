@@ -1,10 +1,10 @@
    package com.example.bookkeeper.database.entities
 
-import androidx.room.Entity
-import androidx.room.ForeignKey
+import androidx.room.*
 import androidx.room.ForeignKey.CASCADE
-import androidx.room.Ignore
-import androidx.room.PrimaryKey
+import com.example.bookkeeper.database.entities.type_converters.AuthorsTypeConverter
+import com.example.bookkeeper.database.entities.type_converters.ImagesTypeConverter
+import com.google.gson.annotations.SerializedName
 import org.jetbrains.annotations.Nullable
 
 @Entity
@@ -20,6 +20,12 @@ data class BookInfoEntity(
     var printType: String?,
     var averageRating: Double?,
     var language: String?,
+    @TypeConverters(ImagesTypeConverter::class)
+    @SerializedName("imageLinks")
+    var imageLinks: ImagesEntity?,
+  /*  @TypeConverters(AuthorsTypeConverter::class)
+    @SerializedName("authors")
+    var authors: MutableList<AuthorsEntity>,*/
     @ForeignKey
         (entity = BooksEntity::class,
             parentColumns = ["id"],

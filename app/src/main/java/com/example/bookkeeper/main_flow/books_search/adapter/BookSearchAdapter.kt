@@ -4,9 +4,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.bookkeeper.R
 import com.example.bookkeeper.database.entities.BookInfoEntity
 import com.example.bookkeeper.database.entities.bojos.BooksAndBookDetailsBojo
+import com.example.bookkeeper.utils.loadUrlImage
 import kotlinx.android.synthetic.main.book_item_layout.view.*
 
 class BookSearchAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -37,9 +39,13 @@ class BookSearchAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         }
 
         private fun setDataToViews(booksInfo: BookInfoEntity) = with(itemView) {
-            //bookImage.loadUrlImage(booksInfo.)
+            if (booksInfo.imageLinks != null) {
+                booksInfo.imageLinks!!.smallThumbnail?.replace("http", "https")?.let { bookImage.loadUrlImage(it, context)
+                }
+            }
             bookTitle.text = booksInfo.title
             bookDescription.text = booksInfo.subtitle
+            //bookAuthor.text = booksInfo.authors.toString()
         }
     }
 }

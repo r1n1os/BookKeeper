@@ -5,7 +5,9 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.bookkeeper.BookKeeperApplication
 import com.example.bookkeeper.base_classes.BaseViewModel
+import com.example.bookkeeper.database.entities.AuthorsEntity
 import com.example.bookkeeper.database.entities.BookInfoEntity
+import com.example.bookkeeper.database.entities.ImagesEntity
 import com.example.bookkeeper.database.entities.VolumesEntity
 import com.example.bookkeeper.database.entities.bojos.BooksAndBookDetailsBojo
 import com.example.bookkeeper.network.RetrofitService
@@ -37,13 +39,21 @@ class BookSearchViewModel(application: Application) : BaseViewModel(application)
         withContext(Dispatchers.IO){
             val bookResponse = retrofitService.getRetrofitService().getSearchedBooks(searchKeyword)
             val booksInfo = mutableListOf<BookInfoEntity>()
-
             bookResponse.books.forEach {
                 it.volumeInfo.bookId = it.id
                 booksInfo.add(it.volumeInfo)
             }
             BookKeeperApplication.getInstance().getDatabaseInstance().booksDao().updateData(bookResponse.books)
             BookKeeperApplication.getInstance().getDatabaseInstance().bookInfoDao().updateBookInfo(booksInfo)
+            booksInfo.forEach {bookInfo ->
+                bookInfo?.imageLinks?.let { image ->
+                    var tempImage = image
+                    tempImage.bookDetailsId = bookInfo.bookInfoId
+                    BookKeeperApplication.getInstance().getDatabaseInstance().imagesDao().updateBookInfo(tempImage)
+                }
+            }
+           // BookKeeperApplication.getInstance().getDatabaseInstance().authorsDao().updateAuthors(authors)
+
             val loadBooks = BookKeeperApplication.getInstance().getDatabaseInstance().booksDao().getAllBooks()
             withContext(Dispatchers.Main){
                 emit(loadBooks)
