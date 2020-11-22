@@ -14,14 +14,16 @@ interface BooksDao {
     @Query("DELETE FROM BooksEntity")
     suspend fun deleteAll()
 
-    @Transaction
-    suspend fun updateData(searchedBooks: MutableList<BooksEntity>){
-        deleteAll()
-        insertListOfBooks(searchedBooks)
-    }
+    @Query("SELECT * FROM BooksEntity WHERE id=:selectedBookId")
+    suspend fun getBookById(selectedBookId: String): BooksEntity
 
     @Transaction
     @Query("SELECT * FROM BooksEntity")
     suspend fun getAllBooks(): List<BooksAndBookDetailsBojo>
 
+    @Transaction
+    suspend fun updateData(searchedBooks: MutableList<BooksEntity>){
+        deleteAll()
+        insertListOfBooks(searchedBooks)
+    }
 }

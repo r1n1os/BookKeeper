@@ -17,5 +17,14 @@
         android:id="@+id/booksSearchFragment"
         android:name="com.example.bookkeeper.main_flow.books_search.BooksSearchFragment"
         android:label="fragment_books_search"
-        tools:layout="@layout/fragment_books_search" />
+        tools:layout="@layout/fragment_books_search" >
+        <action
+            android:id="@+id/action_booksSearchFragment_to_bookDetailsFragment"
+            app:destination="@id/bookDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/bookDetailsFragment"
+        android:name="com.example.bookkeeper.main_flow.book_details.BookDetailsFragment"
+        android:label="fragment_book_details"
+        tools:layout="@layout/fragment_book_details" />
 </navigation>

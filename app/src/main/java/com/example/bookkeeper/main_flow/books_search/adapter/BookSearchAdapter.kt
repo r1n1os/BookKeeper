@@ -11,7 +11,11 @@ import com.example.bookkeeper.database.entities.bojos.BooksAndBookDetailsBojo
 import com.example.bookkeeper.utils.loadUrlImage
 import kotlinx.android.synthetic.main.book_item_layout.view.*
 
-class BookSearchAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class BookSearchAdapter(val onBookSearchListener: OnBookSearchListener): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    interface OnBookSearchListener{
+        fun onBookSelected(bookId: String)
+    }
 
     private val booksList = mutableListOf<BooksAndBookDetailsBojo>()
 
@@ -36,6 +40,9 @@ class BookSearchAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     inner class BooksViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         fun onBindData(bookEntity: BooksAndBookDetailsBojo) = with(itemView) {
             setDataToViews(bookEntity.booksInfo)
+            this.setOnClickListener {
+                onBookSearchListener.onBookSelected(booksList[adapterPosition].book.id)
+            }
         }
 
         private fun setDataToViews(booksInfo: BookInfoEntity) = with(itemView) {
