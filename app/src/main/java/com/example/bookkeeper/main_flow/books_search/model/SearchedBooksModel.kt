@@ -22,7 +22,7 @@ data class SearchedBooksModel(
             var searchedBooksModel = mutableListOf<SearchedBooksModel>()
 
             if (books.size > 0 && loadPreviousSearch) {
-                searchedBooksModel.add(SearchedBooksModel(BookKeeperApplication.getInstance().getString(R.string.previous_searched_books), null, TITLE_SECTION))
+                searchedBooksModel.add(SearchedBooksModel(context.getString(R.string.previous_searched_books), null, TITLE_SECTION))
                 searchedBooksModel = addBooksToList(searchedBooksModel, books)
             } else if (books.size > 0){
                 searchedBooksModel = addBooksToList(searchedBooksModel, books)
