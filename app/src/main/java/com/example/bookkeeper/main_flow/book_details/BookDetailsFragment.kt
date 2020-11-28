@@ -61,7 +61,7 @@ class BookDetailsFragment : BaseFragment<BookDetailsViewModel>() {
             book.volumeInfo.imageLinks?.smallThumbnail?.let { bookDetailsImage.loadUrlImage(it.replace("http", "https"), this.requireContext()) }
             bookDetailsTitle.text = book.volumeInfo.title
             bookDetailsSubtitle.text = book.volumeInfo.subtitle
-            bookRating.text = "4/5"
+            bookRating.text = book.volumeInfo.averageRating.toString()
             bookDescription.text = book.volumeInfo.description
         }
     }
