@@ -11,6 +11,7 @@ import com.example.bookkeeper.main_flow.books_search.model.SearchedBooksModel
 import com.example.bookkeeper.network.RetrofitService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
@@ -35,26 +36,23 @@ class BookSearchViewModel(application: Application) : BaseViewModel(application)
 
    private fun executeRequestForSearchedBook(searchKeyword: String) = flow{
        var loadBooks = mutableListOf<SearchedBooksModel>()
-        withContext(Dispatchers.IO){
-            val bookResponse = retrofitService.getRetrofitService().getSearchedBooks(searchKeyword)
-            val booksInfo = mutableListOf<BookInfoEntity>()
-            bookResponse.books.forEach {
-                it.volumeInfo.bookId = it.id
-                booksInfo.add(it.volumeInfo)
-            }
-            BookKeeperApplication.getInstance().getDatabaseInstance().booksDao().updateData(bookResponse.books)
-            BookKeeperApplication.getInstance().getDatabaseInstance().bookInfoDao().updateBookInfo(booksInfo)
-            booksInfo.forEach {bookInfo ->
-                bookInfo.imageLinks?.let { image ->
-                    var tempImage = image
-                    tempImage.bookDetailsId = bookInfo.bookInfoId
-                    BookKeeperApplication.getInstance().getDatabaseInstance().imagesDao().updateBookInfo(tempImage)
+        withContext(Dispatchers.IO) {
+            val requestResponse = retrofitService.getRetrofitService().getSearchedBooks(searchKeyword)
+            if (requestResponse.isSuccessful) {
+                val bookResponse = requestResponse.body()
+                bookResponse?.books?.let { books ->
+                    BooksEntity.insertBooks(books).collect {
+                        loadBooks = SearchedBooksModel.createBookSearchModel(it.toMutableList(), false)
+                    }
                 }
+            } else {
+                errorResponse.value = requestResponse.message()
             }
-           loadBooks = SearchedBooksModel.createBookSearchModel(BookKeeperApplication.getInstance().getDatabaseInstance().booksDao().getAllBooks().toMutableList(), false)
         }
        emit(loadBooks)
-    }
+    }.catch {
+        Log.d("catchException", it.message)
+   }
 
     fun getPreviousSearchedItemsFromDatabase(){
         launch {

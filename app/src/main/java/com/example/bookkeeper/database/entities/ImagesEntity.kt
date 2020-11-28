@@ -3,6 +3,8 @@ package com.example.bookkeeper.database.entities
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import com.example.bookkeeper.BookKeeperApplication
+import kotlinx.coroutines.flow.flow
 
 @Entity
 data class ImagesEntity(
@@ -17,4 +19,12 @@ data class ImagesEntity(
     )
     var bookDetailsId: Long
 ) {
+    companion object{
+        suspend fun insertImage(imagesEntity: ImagesEntity) = with(BookKeeperApplication){
+            flow {
+                getInstance().getDatabaseInstance().imagesDao().insertImageObject(imagesEntity)
+                emit(imagesEntity)
+            }
+        }
+    }
 }

@@ -41,6 +41,7 @@ class BooksSearchFragment : BaseFragment<BookSearchViewModel>(), SearchView.OnQu
         initAdapter()
         initSearchViewListener()
         getObservableForBooks()
+        getObservableForErrors()
         makeRequestToGetLastSearchedItems()
     }
 
@@ -52,6 +53,12 @@ class BooksSearchFragment : BaseFragment<BookSearchViewModel>(), SearchView.OnQu
     private fun getObservableForBooks() {
         bookSearchViewModel.booksResult.observe(this.requireActivity(), Observer {books ->
             searchBookAdapter.loadSearchedBooks(books.toMutableList())
+        })
+    }
+
+    private fun getObservableForErrors(){
+        bookSearchViewModel.errorResponse.observe(this.requireActivity(),{errorMessage ->
+            showToast(errorMessage)
         })
     }
 
