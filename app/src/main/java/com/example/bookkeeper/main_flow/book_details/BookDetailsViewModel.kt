@@ -25,11 +25,10 @@ class BookDetailsViewModel(application: Application): BaseViewModel(application)
     }
 
     private fun executeLocalQueryToGetSelectedDetails(bookId: String) = flow {
+        var selectedBook: BooksEntity? = null
         withContext(Dispatchers.IO) {
-            val selectedBook = BookKeeperApplication.getInstance().getDatabaseInstance().booksDao().getBookById(bookId)
-            withContext(Dispatchers.Main) {
-                emit(selectedBook)
-            }
+            selectedBook = BookKeeperApplication.getInstance().getDatabaseInstance().booksDao().getBookById(bookId)
         }
+        emit(selectedBook)
     }
 }
