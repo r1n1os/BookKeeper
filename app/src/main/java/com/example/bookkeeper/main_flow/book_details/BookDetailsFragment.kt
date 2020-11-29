@@ -13,12 +13,15 @@ import com.example.bookkeeper.BookKeeperApplication
 import com.example.bookkeeper.R
 import com.example.bookkeeper.base_classes.BaseFragment
 import com.example.bookkeeper.database.entities.BooksEntity
+import com.example.bookkeeper.databinding.FragmentBookDetailsBinding
 import com.example.bookkeeper.main_flow.books_search.BookSearchViewModel
 import com.example.bookkeeper.main_flow.books_search.BooksSearchFragment.Companion.SELECTED_BOOK_ID
 import com.example.bookkeeper.utils.loadUrlImage
 import kotlinx.android.synthetic.main.fragment_book_details.*
 
 class BookDetailsFragment : BaseFragment<BookDetailsViewModel>() {
+
+    private var bookDetailsBinding: FragmentBookDetailsBinding? = null
 
     private lateinit var navController: NavController
     private var bookDetailsViewMode = BookDetailsViewModel(BookKeeperApplication.getInstance())
@@ -29,6 +32,7 @@ class BookDetailsFragment : BaseFragment<BookDetailsViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        bookDetailsBinding = FragmentBookDetailsBinding.bind(view)
         navController = Navigation.findNavController(view)
         initViewAndData()
     }
@@ -58,11 +62,11 @@ class BookDetailsFragment : BaseFragment<BookDetailsViewModel>() {
 
     private fun setDataToViews(selectedBook: BooksEntity?) {
         selectedBook?.let { book ->
-            book.volumeInfo.imageLinks?.smallThumbnail?.let { bookDetailsImage.loadUrlImage(it.replace("http", "https"), this.requireContext()) }
-            bookDetailsTitle.text = book.volumeInfo.title
-            bookDetailsSubtitle.text = book.volumeInfo.subtitle
-            bookRating.text = book.volumeInfo.averageRating.toString()
-            bookDescription.text = book.volumeInfo.description
+            book.volumeInfo.imageLinks?.smallThumbnail?.let { bookDetailsBinding?.bookDetailsImage?.loadUrlImage(it.replace("http", "https"), this.requireContext()) }
+            bookDetailsBinding?.bookDetailsTitle?.text = book.volumeInfo.title
+            bookDetailsBinding?.bookDetailsSubtitle?.text = book.volumeInfo.subtitle
+            bookDetailsBinding?.bookRating?.text = book.volumeInfo.averageRating.toString()
+            bookDetailsBinding?.bookDescription?.text = book.volumeInfo.description
         }
     }
 }

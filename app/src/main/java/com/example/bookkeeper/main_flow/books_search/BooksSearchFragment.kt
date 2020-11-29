@@ -13,11 +13,14 @@ import androidx.navigation.Navigation
 import com.example.bookkeeper.BookKeeperApplication
 import com.example.bookkeeper.R
 import com.example.bookkeeper.base_classes.BaseFragment
+import com.example.bookkeeper.databinding.FragmentBooksSearchBinding
 import com.example.bookkeeper.main_flow.books_search.adapter.BookSearchAdapter
 import kotlinx.android.synthetic.main.fragment_books_search.*
 
 class BooksSearchFragment : BaseFragment<BookSearchViewModel>(), SearchView.OnQueryTextListener,
     BookSearchAdapter.OnBookSearchListener {
+
+    private var bookSearchBinding: FragmentBooksSearchBinding? = null
 
     companion object{
         const val SELECTED_BOOK_ID = "selected_book_id"
@@ -33,10 +36,15 @@ class BooksSearchFragment : BaseFragment<BookSearchViewModel>(), SearchView.OnQu
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        bookSearchBinding = FragmentBooksSearchBinding.bind(view)
         navController = Navigation.findNavController(view)
         initViewAndData()
     }
 
+    override fun onDestroyView() {
+        bookSearchBinding = null
+        super.onDestroyView()
+    }
     private fun initViewAndData() {
         initAdapter()
         initSearchViewListener()
@@ -47,7 +55,7 @@ class BooksSearchFragment : BaseFragment<BookSearchViewModel>(), SearchView.OnQu
 
     private fun initAdapter() {
         searchBookAdapter = BookSearchAdapter(this)
-        booksResultRecyclerView.adapter = searchBookAdapter
+        bookSearchBinding?.booksResultRecyclerView?.adapter = searchBookAdapter
     }
 
     private fun getObservableForBooks() {
