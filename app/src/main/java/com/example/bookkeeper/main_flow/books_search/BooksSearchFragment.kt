@@ -48,14 +48,22 @@ class BooksSearchFragment : BaseFragment<BookSearchViewModel>(), SearchView.OnQu
     private fun initViewAndData() {
         initAdapter()
         initSearchViewListener()
-        getObservableForBooks()
-        getObservableForErrors()
+        getObservables()
         makeRequestToGetLastSearchedItems()
     }
 
     private fun initAdapter() {
         searchBookAdapter = BookSearchAdapter(this)
         bookSearchBinding?.booksResultRecyclerView?.adapter = searchBookAdapter
+    }
+
+    private fun initSearchViewListener() {
+        bookSearch.setOnQueryTextListener(this)
+    }
+
+    private fun getObservables() {
+        getObservableForBooks()
+        getObservableForErrors()
     }
 
     private fun getObservableForBooks() {
@@ -68,10 +76,6 @@ class BooksSearchFragment : BaseFragment<BookSearchViewModel>(), SearchView.OnQu
         bookSearchViewModel.errorResponse.observe(this.requireActivity(),{errorMessage ->
             showToast(errorMessage)
         })
-    }
-
-    private fun initSearchViewListener() {
-        bookSearch.setOnQueryTextListener(this)
     }
 
     private fun makeRequestToGetLastSearchedItems(){

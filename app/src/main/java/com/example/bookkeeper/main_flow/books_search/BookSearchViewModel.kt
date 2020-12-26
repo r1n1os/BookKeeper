@@ -51,7 +51,8 @@ class BookSearchViewModel(application: Application) : BaseViewModel(application)
         }
        emit(loadBooks)
     }.catch {
-        Log.d("catchException", it.message)
+       Log.d("catchException", it.message)
+       errorResponse.value = it.message
    }
 
     fun getPreviousSearchedItemsFromDatabase(){
