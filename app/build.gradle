@@ -55,7 +55,7 @@ dependencies {
 
     //live cycle and data
     implementation "androidx.lifecycle:lifecycle-extensions:$lifeCycleComplilerAndViewModelVersion"
-    kapt "androidx.lifecycle:lifecycle-compiler:$lifeCycleComplilerAndViewModelVersion"
+    kapt "androidx.lifecycle:lifecycle-common-java8:$lifeCycleComplilerAndViewModelVersion"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_livedata_ktxVersion"
 
     //Coroutines

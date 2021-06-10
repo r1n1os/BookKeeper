@@ -1,12 +1,9 @@
 package com.example.bookkeeper.main_flow.book_details
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -15,7 +12,6 @@ import com.example.bookkeeper.R
 import com.example.bookkeeper.base_classes.BaseFragment
 import com.example.bookkeeper.database.entities.BooksEntity
 import com.example.bookkeeper.databinding.FragmentBookDetailsBinding
-import com.example.bookkeeper.main_flow.books_search.BookSearchViewModel
 import com.example.bookkeeper.main_flow.books_search.BooksSearchFragment.Companion.SELECTED_BOOK_ID
 import com.example.bookkeeper.utils.loadUrlImage
 import kotlinx.coroutines.flow.collect
