@@ -3,6 +3,8 @@ package com.example.bookkeeper.main_flow.books_search.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bookkeeper.R
 import com.example.bookkeeper.database.entities.BookInfoEntity
@@ -11,8 +13,7 @@ import com.example.bookkeeper.main_flow.books_search.model.SearchedBooksModel
 import com.example.bookkeeper.main_flow.books_search.model.SearchedBooksModel.BooksViewType.EMPTY_VIEW_SECTION
 import com.example.bookkeeper.main_flow.books_search.model.SearchedBooksModel.BooksViewType.TITLE_SECTION
 import com.example.bookkeeper.utils.loadUrlImage
-import kotlinx.android.synthetic.main.book_item_layout.view.*
-import kotlinx.android.synthetic.main.title_layout.view.*
+
 
 class BookSearchAdapter(val onBookSearchListener: OnBookSearchListener): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -48,12 +49,16 @@ class BookSearchAdapter(val onBookSearchListener: OnBookSearchListener): Recycle
     override fun getItemCount() = booksList.size
 
     inner class TitleViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
+        var title = itemView.findViewById<TextView>(R.id.title)
         fun onBindData(titleValue: String) = with(itemView){
             title.text = titleValue
         }
     }
 
     inner class BooksViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
+        var bookTitle = itemView.findViewById<TextView>(R.id.bookTitle)
+        var bookDescription = itemView.findViewById<TextView>(R.id.bookDescription)
+        var bookImage = itemView.findViewById<ImageView>(R.id.bookImage)
         fun onBindData(bookEntity: BooksAndBookDetailsBojo) = with(itemView) {
             setDataToViews(bookEntity.booksInfo)
             this.setOnClickListener {
