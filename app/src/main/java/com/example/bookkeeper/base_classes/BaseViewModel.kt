@@ -8,12 +8,13 @@ import com.example.bookkeeper.database.BookKeeperDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlin.coroutines.CoroutineContext
 
 abstract class BaseViewModel(application: Application): AndroidViewModel(application), CoroutineScope{
 
     private val job = Job()
-    var errorResponse = MutableLiveData<String>()
+    var errorResponse = MutableStateFlow<String>("")
 
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main

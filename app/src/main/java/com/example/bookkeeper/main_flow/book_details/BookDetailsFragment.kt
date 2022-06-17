@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.bookkeeper.BookKeeperApplication
@@ -18,6 +19,8 @@ import com.example.bookkeeper.main_flow.books_search.BookSearchViewModel
 import com.example.bookkeeper.main_flow.books_search.BooksSearchFragment.Companion.SELECTED_BOOK_ID
 import com.example.bookkeeper.utils.loadUrlImage
 import kotlinx.android.synthetic.main.fragment_book_details.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 class BookDetailsFragment : BaseFragment<BookDetailsViewModel>() {
 
@@ -55,9 +58,14 @@ class BookDetailsFragment : BaseFragment<BookDetailsViewModel>() {
     }
 
     private fun getObservableForRequestedBook() {
-        bookDetailsViewMode.selectedBook.observe(this.requireActivity(), Observer { selectedBook ->
+        viewLifecycleOwner.lifecycleScope.launch {
+            bookDetailsViewMode.selectedBook.collect { selectedBook ->
+                setDataToViews(selectedBook)
+            }
+        }
+        /*bookDetailsViewMode.selectedBook.observe(this.requireActivity(), Observer { selectedBook ->
             setDataToViews(selectedBook)
-        })
+        })*/
     }
 
     private fun setDataToViews(selectedBook: BooksEntity?) {
