@@ -17,7 +17,7 @@ import kotlinx.coroutines.withContext
 
 class BookDetailsViewModel(application: Application): BaseViewModel(application){
 
-    val tempBookInfoEntity = BookInfoEntity(-1L, "", "", "", "", "", -1, "", 0.0, "", null, "")
+    private val tempBookInfoEntity = BookInfoEntity(-1L, "", "", "", "", "", -1, "", 0.0, "", null, "")
     val selectedBook = MutableStateFlow<BooksEntity>(BooksEntity("", "", tempBookInfoEntity))
 
     fun getBookDetails(bookId: String){
