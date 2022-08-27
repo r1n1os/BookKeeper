@@ -6,17 +6,15 @@ import androidx.room.PrimaryKey
 import com.example.bookkeeper.BookKeeperApplication
 import kotlinx.coroutines.flow.flow
 
-@Entity
+@Entity(foreignKeys = [ForeignKey(entity = BookInfoEntity::class,
+    parentColumns = ["bookInfoId"],
+    childColumns = ["bookDetailsId"],
+    onDelete = ForeignKey.CASCADE
+)])
 data class ImagesEntity(
     @PrimaryKey(autoGenerate = true) var id: Long,
     var smallThumbnail: String?,
     var thumbNail: String?,
-    @ForeignKey
-        (entity = BookInfoEntity::class,
-        parentColumns = ["bookInfoId"],
-        childColumns = ["bookDetailsId"],
-        onDelete = ForeignKey.CASCADE
-    )
     var bookDetailsId: Long
 ) {
     companion object{

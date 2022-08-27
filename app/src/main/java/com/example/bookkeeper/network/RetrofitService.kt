@@ -7,9 +7,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 class RetrofitService {
 
     fun getRetrofitService() = Retrofit.Builder()
-             .baseUrl(BASE_URL)
-             .addConverterFactory(GsonConverterFactory.create())
-             .build()
-             .create(BooksApi::class.java)
+        .baseUrl(BASE_URL)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+        .create(BooksApi::class.java)
 
 }

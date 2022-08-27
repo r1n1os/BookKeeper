@@ -7,7 +7,11 @@ import com.example.bookkeeper.database.entities.type_converters.ImagesTypeConver
 import com.google.gson.annotations.SerializedName
 import kotlinx.coroutines.flow.flow
 
-@Entity
+@Entity(foreignKeys = [ForeignKey(entity = BooksEntity::class,
+    parentColumns = ["id"],
+    childColumns = ["bookId"],
+    onDelete = CASCADE
+)])
 data class BookInfoEntity(
         @PrimaryKey(autoGenerate = true)
         var bookInfoId: Long,
@@ -26,12 +30,6 @@ data class BookInfoEntity(
         /*  @TypeConverters(AuthorsTypeConverter::class)
           @SerializedName("authors")
           var authors: MutableList<AuthorsEntity>,*/
-        @ForeignKey
-        (entity = BooksEntity::class,
-                parentColumns = ["id"],
-                childColumns = ["bookId"],
-                onDelete = CASCADE
-        )
         var bookId: String
 ) {
     companion object {

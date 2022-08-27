@@ -16,10 +16,6 @@ class BookSearchViewModel(application: Application) : BaseViewModel(application)
 
     private var retrofitService = RetrofitService()
     var booksResult = MutableStateFlow<List<SearchedBooksModel>>(mutableListOf())
-    /*var bookResult : LiveData<TestEntity> = liveData(Dispatchers.IO){
-        val result = retrofitService.getRetrofitService().getSearchedBooks("Clean Code")
-        emit(result)
-    }*/
 
     fun getSearchedBook(searchBookName: String){
         launch {
@@ -30,22 +26,18 @@ class BookSearchViewModel(application: Application) : BaseViewModel(application)
     }
 
    private fun executeRequestForSearchedBook(searchKeyword: String) = flow{
-       //var loadBooks = mutableListOf<SearchedBooksModel>()
-       // withContext(Dispatchers.IO) {
-            val requestResponse = retrofitService.getRetrofitService().getSearchedBooks(searchKeyword)
-            if (requestResponse.isSuccessful) {
-                val bookResponse = requestResponse.body()
-                bookResponse?.books?.let { books ->
-                    BooksEntity.insertBooks(books).collect {
-                     emit(SearchedBooksModel.createBookSearchModel(it.toMutableList(), false))
-                    }
-                }
-            } else {
-                errorResponse.value = requestResponse.message() ?: "Something went wrong"
-            }
-            //emit(loadBooks)
-       // }
-    }.flowOn(Dispatchers.Main)
+       val requestResponse = retrofitService.getRetrofitService().getSearchedBooks(searchKeyword)
+       if (requestResponse.isSuccessful) {
+           val bookResponse = requestResponse.body()
+           bookResponse?.books?.let { books ->
+               BooksEntity.insertBooks(books).collect {
+                   emit(SearchedBooksModel.createBookSearchModel(it.toMutableList(), false))
+               }
+           }
+       } else {
+           errorResponse.value = requestResponse.message() ?: "Something went wrong"
+       }
+    }.flowOn(Dispatchers.Default)
        .catch {
            errorResponse.value = it.message ?: "Something went wrong"
    }
@@ -60,10 +52,5 @@ class BookSearchViewModel(application: Application) : BaseViewModel(application)
 
     private fun executeLocalRequestToGetLastSearchedItems() = flow {
         emit(SearchedBooksModel.createBookSearchModel(BookKeeperApplication.getInstance().getDatabaseInstance().booksDao().getAllBooks().toMutableList(), true))
-
-        /*var books = mutableListOf<SearchedBooksModel>()
-        withContext(Dispatchers.IO){
-        }
-        emit(books)*/
-    }.flowOn(Dispatchers.Main)
+    }.flowOn(Dispatchers.Default)
 }

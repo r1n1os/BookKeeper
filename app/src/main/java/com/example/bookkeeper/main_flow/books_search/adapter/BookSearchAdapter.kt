@@ -7,12 +7,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.bookkeeper.R
 import com.example.bookkeeper.database.entities.BookInfoEntity
 import com.example.bookkeeper.database.entities.bojos.BooksAndBookDetailsBojo
+import com.example.bookkeeper.databinding.BookItemLayoutBinding
+import com.example.bookkeeper.databinding.EmptyBooksLayoutBinding
+import com.example.bookkeeper.databinding.TitleLayoutBinding
 import com.example.bookkeeper.main_flow.books_search.model.SearchedBooksModel
 import com.example.bookkeeper.main_flow.books_search.model.SearchedBooksModel.BooksViewType.EMPTY_VIEW_SECTION
 import com.example.bookkeeper.main_flow.books_search.model.SearchedBooksModel.BooksViewType.TITLE_SECTION
 import com.example.bookkeeper.utils.loadUrlImage
-import kotlinx.android.synthetic.main.book_item_layout.view.*
-import kotlinx.android.synthetic.main.title_layout.view.*
 
 class BookSearchAdapter(val onBookSearchListener: OnBookSearchListener): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -30,9 +31,9 @@ class BookSearchAdapter(val onBookSearchListener: OnBookSearchListener): Recycle
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            EMPTY_VIEW_SECTION.ordinal -> EmptyViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.empty_books_layout, parent, false))
-            TITLE_SECTION.ordinal -> TitleViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.title_layout, parent, false))
-            else -> BooksViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.book_item_layout, parent, false))
+            EMPTY_VIEW_SECTION.ordinal -> EmptyViewHolder(EmptyBooksLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+            TITLE_SECTION.ordinal -> TitleViewHolder(TitleLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+            else -> BooksViewHolder(BookItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false))
         }
     }
 
@@ -47,13 +48,13 @@ class BookSearchAdapter(val onBookSearchListener: OnBookSearchListener): Recycle
     override fun getItemViewType(position: Int) = booksList[position].booksViewType.ordinal
     override fun getItemCount() = booksList.size
 
-    inner class TitleViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
-        fun onBindData(titleValue: String) = with(itemView){
+    inner class TitleViewHolder(var binding: TitleLayoutBinding): RecyclerView.ViewHolder(binding.root){
+        fun onBindData(titleValue: String) = with(binding){
             title.text = titleValue
         }
     }
 
-    inner class BooksViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
+    inner class BooksViewHolder(var binding: BookItemLayoutBinding): RecyclerView.ViewHolder(binding.root){
         fun onBindData(bookEntity: BooksAndBookDetailsBojo) = with(itemView) {
             setDataToViews(bookEntity.booksInfo)
             this.setOnClickListener {
@@ -61,9 +62,9 @@ class BookSearchAdapter(val onBookSearchListener: OnBookSearchListener): Recycle
             }
         }
 
-        private fun setDataToViews(booksInfo: BookInfoEntity) = with(itemView) {
+        private fun setDataToViews(booksInfo: BookInfoEntity) = with(binding) {
             if (booksInfo.imageLinks != null) {
-                booksInfo.imageLinks!!.smallThumbnail?.replace("http", "https")?.let { bookImage.loadUrlImage(it, context)
+                booksInfo.imageLinks!!.smallThumbnail?.replace("http", "https")?.let { bookImage.loadUrlImage(it, root.context)
                 }
             }
             bookTitle.text = booksInfo.title
@@ -72,7 +73,7 @@ class BookSearchAdapter(val onBookSearchListener: OnBookSearchListener): Recycle
         }
     }
 
-    inner class EmptyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
+    inner class EmptyViewHolder(val binding: EmptyBooksLayoutBinding): RecyclerView.ViewHolder(binding.root){
         fun onBindData() {
         }
     }
