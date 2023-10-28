@@ -14,10 +14,8 @@ import com.example.bookkeeper.R
 import com.example.bookkeeper.base_classes.BaseFragment
 import com.example.bookkeeper.database.entities.BooksEntity
 import com.example.bookkeeper.databinding.FragmentBookDetailsBinding
-import com.example.bookkeeper.main_flow.books_search.BookSearchViewModel
 import com.example.bookkeeper.main_flow.books_search.BooksSearchFragment.Companion.SELECTED_BOOK_ID
 import com.example.bookkeeper.utils.loadUrlImage
-import kotlinx.android.synthetic.main.fragment_book_details.*
 
 class BookDetailsFragment : BaseFragment<BookDetailsViewModel>() {
 
@@ -44,7 +42,7 @@ class BookDetailsFragment : BaseFragment<BookDetailsViewModel>() {
     }
 
     private fun initListeners() {
-        backIcon.setOnClickListener { navController.popBackStack() }
+        bookDetailsBinding?.backIcon?.setOnClickListener { navController.popBackStack() }
     }
 
     private fun getIntentValues() {

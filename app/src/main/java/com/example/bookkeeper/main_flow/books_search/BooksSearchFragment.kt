@@ -1,7 +1,6 @@
 package com.example.bookkeeper.main_flow.books_search
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +14,6 @@ import com.example.bookkeeper.R
 import com.example.bookkeeper.base_classes.BaseFragment
 import com.example.bookkeeper.databinding.FragmentBooksSearchBinding
 import com.example.bookkeeper.main_flow.books_search.adapter.BookSearchAdapter
-import kotlinx.android.synthetic.main.fragment_books_search.*
 
 class BooksSearchFragment : BaseFragment<BookSearchViewModel>(), SearchView.OnQueryTextListener,
     BookSearchAdapter.OnBookSearchListener {
@@ -58,7 +56,7 @@ class BooksSearchFragment : BaseFragment<BookSearchViewModel>(), SearchView.OnQu
     }
 
     private fun initSearchViewListener() {
-        bookSearch.setOnQueryTextListener(this)
+        bookSearchBinding?.bookSearch?.setOnQueryTextListener(this)
     }
 
     private fun getObservables() {
@@ -73,9 +71,9 @@ class BooksSearchFragment : BaseFragment<BookSearchViewModel>(), SearchView.OnQu
     }
 
     private fun getObservableForErrors(){
-        bookSearchViewModel.errorResponse.observe(this.requireActivity(),{errorMessage ->
+        bookSearchViewModel.errorResponse.observe(this.requireActivity()) { errorMessage ->
             showToast(errorMessage)
-        })
+        }
     }
 
     private fun makeRequestToGetLastSearchedItems(){

@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/colorPrimary"
-    tools:viewBindingIgnore="true">
+    android:background="@color/colorPrimary">
 
     <TextView
         android:id="@+id/title"

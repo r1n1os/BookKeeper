@@ -51,7 +51,7 @@ class BookSearchViewModel(application: Application) : BaseViewModel(application)
         }
        emit(loadBooks)
     }.catch {
-       Log.d("catchException", it.message)
+       Log.d("catchException", it?.message.toString())
        errorResponse.value = it.message
    }
 

@@ -27,8 +27,8 @@ data class BooksEntity(
                     book.volumeInfo.bookId = book.id
                     booksInfo.add(book.volumeInfo)
                 }
-                insertBooksInfo(booksInfo)
                 getDatabaseInstance().booksDao().updateData(books)
+                insertBooksInfo(booksInfo)
                 emit(getDatabaseInstance().booksDao().getAllBooks())
             }
         }
